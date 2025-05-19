@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { signup } from "../services/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -12,15 +14,15 @@ const SignupForm = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            signup(formData);
+            await signup(formData);
+            navigate("/login");
         } catch (err) {
-            console.error('Error submitting form data', err);
+            console.error('Error submitting form data:', err);
         }
-
     }
 
     return (

@@ -17,13 +17,19 @@ export const signup = async (info) => {
 export const login  = async (credentials) => {
     const url = "http://localhost:3000/login";
     try {
-        const data = await fetch(url, {
+        const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(credentials),
         });
-        setToken(data.token); // set token
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Login Failed");
+        }
+
+        const data = await response.json();
+        setToken(data.token);
     } catch (err) {
         console.error(err.message);
     }

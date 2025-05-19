@@ -1,10 +1,11 @@
-import SignupForm from "./components/SignupForm"
+import Header from "./components/Header"
 
 function App() {
 
   return (
     <>
-      <SignupForm />
+      <Header />
+      <h1>Hello World</h1>
     </>
   )
 }
