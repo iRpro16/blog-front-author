@@ -4,7 +4,7 @@ import { Editor } from "@tinymce/tinymce-react";
 const Content = ({ formData, setFormData }) => {
     const editorRef = useRef(null);
     
-    const handleChange = (content, editor) => {
+    const handleChange = (content) => {
         setFormData({ ...formData, 'content' : content });
     }
     return (

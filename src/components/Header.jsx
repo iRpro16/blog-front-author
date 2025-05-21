@@ -9,14 +9,14 @@ const Header = () => {
     }
 
     return (
-        <header>
-            <div>
+        <header className="flex justify-between p-10 border-b-2">
+            <div className="flex">
                 <h1>Image will go here</h1>
                 <h1>Blog</h1>
             </div>
-            <div>
+            <div className="flex gap-5">
                 <h2>Profile</h2>
-                <button onClick={handleLogout}>Log out</button>
+                <button className="cursor-pointer" onClick={handleLogout}>Log out</button>
             </div>
         </header>
     )
