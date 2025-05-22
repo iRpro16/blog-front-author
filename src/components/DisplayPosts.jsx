@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { getAllBlogs } from "../services/blog";
 import { Trash, Pencil, EllipsisVertical  } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Published from "./Published";
+import { deleteBlog } from "../services/blog";
 
 const DisplayPosts = () => {
     const [allPosts, setAllPosts] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [openDropdownId, setOpenDropdownId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -39,10 +43,16 @@ const DisplayPosts = () => {
         setOpenDropdownId(null);
     }
 
-    const handleDelete = (postId) => {
-        // handle delete
-        console.log(postId);
-        setOpenDropdownId(null);
+    const handleDelete = async (postId) => {
+        try {
+            await deleteBlog(postId);
+            setOpenDropdownId(null);
+
+            // remove from array
+            setAllPosts((prevPosts) => prevPosts.filter(post => post.id !== postId));
+        } catch (err) {
+            console.error("Delete failed:", err);
+        }
     };
 
     const handleEdit = (postId) => {
@@ -61,11 +71,17 @@ const DisplayPosts = () => {
                 <div 
                     key={post.id} 
                     className="bg-white p-4 relative border-b-1 border-gray-400"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/blog/${post.id}`);
+                    }}
                 >
                     <div className="flex justify-between items-start">
                         <div className="flex-grow">
-                            <h2 className="text-3xl font-bold">{post.heading}</h2>
+                            <div className="flex gap-5">
+                                <h2 className="text-3xl font-bold">{post.heading}</h2>
+                                <Published isPublished={post.published}/>
+                            </div>
                             <h4 className="text-xl text-gray-600">{post.subheading}</h4>
                         </div>
                         <div

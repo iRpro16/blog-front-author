@@ -43,3 +43,46 @@ export const getAllBlogs = async () => {
         throw err;
     }
 }
+
+export const getBlog = async (id) => {
+    const url = `http://localhost:3000/api/posts/${id}`;
+
+    try {
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch blog: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+export const deleteBlog = async (id) => {
+    const url = `http://localhost:3000/api/posts/${id}`;
+    const token = getToken();
+
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error(`Failed to delete blog: ${response.status} ${response.statusText}`);
+        }
+    } catch (err) {
+        console.error("Error deleting blog:", err);
+        throw err;
+    }
+}
