@@ -57,7 +57,7 @@ const DisplayPosts = () => {
 
     const handleEdit = (postId) => {
         // handle edit
-        console.log(postId);
+        navigate(`/blog/edit/${postId}`);
         setOpenDropdownId(null);
     };
 
@@ -70,7 +70,7 @@ const DisplayPosts = () => {
             {allPosts.map(post => (
                 <div 
                     key={post.id} 
-                    className="bg-white p-4 relative border-b-1 border-gray-400"
+                    className="bg-white p-4 relative border-b-1 border-gray-400 hover:cursor-pointer"
                     onClick={(e) => {
                         e.stopPropagation()
                         navigate(`/blog/${post.id}`);

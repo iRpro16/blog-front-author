@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Content from "../components/Content";
-import { createBlog } from "../services/blog";
-import { useNavigate } from "react-router-dom";
+import { editBlog, getBlog } from "../services/blog";
 
-const CreateBlog = () => {
+const EditBlog = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const [publishedBlog, setPublishedBlog] = useState(false);
-    const [formData, setFormData] = useState({
-        heading: '',
-        subheading: '',
-        content: '',
-    })
+    const [formData, setFormData] = useState(null);
+
     const finalData = { ...formData, published: publishedBlog };
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            const data = await getBlog(id);
+            setFormData({
+                heading: data.post.heading,
+                subheading: data.post.subheading,
+                content: data.post.content
+            });
+            setPublishedBlog(data.post.published);
+        };
+
+        fetchPost();
+    }, [id]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name] : e.target.value });
@@ -26,10 +39,10 @@ const CreateBlog = () => {
         e.preventDefault();
         
         try {
-            await createBlog(finalData);
+            await editBlog(id, finalData);
             navigate("/");
         } catch (err) {
-            console.error('Error creating data:', err);
+            console.error('Error editing data:', err);
         }
     }
     
@@ -41,6 +54,7 @@ const CreateBlog = () => {
                     type="text"
                     name="heading"
                     onChange={handleChange}
+                    value={formData?.heading}
                 />
             </div>
             <div>
@@ -49,11 +63,12 @@ const CreateBlog = () => {
                     type="text"
                     name="subheading"
                     onChange={handleChange}
+                    value={formData?.subheading}
                 />
             </div>
-            <Content formData={formData} setFormData={setFormData}/>
+            { formData && <Content formData={formData} setFormData={setFormData}/>}
             <button className="bg-blue-200 rounded-lg p-1" onClick={handlePublished}>
-                {publishedBlog ? 'Publish' : "Don't Publish"}
+                {publishedBlog ? 'Published' : "Publish"}
             </button>
             <button type="submit">Post blog</button>
 
@@ -61,4 +76,4 @@ const CreateBlog = () => {
     )
 }
 
-export default CreateBlog;
+export default EditBlog;

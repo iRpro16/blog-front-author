@@ -86,3 +86,26 @@ export const deleteBlog = async (id) => {
         throw err;
     }
 }
+
+export const editBlog = async (id, formData) => {
+    const url = `http://localhost:3000/api/posts/${id}`;
+    const token = getToken();
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(formData)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Failed to edit blog: ${response.status} ${response.statusText}`);
+        }
+    } catch (err) {
+        console.error("Error editing blog:", err);
+        throw err;
+    }
+}
