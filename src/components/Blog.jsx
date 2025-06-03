@@ -8,6 +8,7 @@ import Comments from "./Comments";
 const Blog = () => {
     let { id } = useParams();
     const [post, setPost] = useState(null);
+    const [comments, setComments] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,6 +18,7 @@ const Blog = () => {
                 setLoading(true);
                 const data = await getBlog(id);
                 setPost(data.post);
+                setComments(data.post.comments);
             } catch (err) {
                 if (err.name !== 'AbortError') {
                     setError(err.message);
@@ -63,7 +65,7 @@ const Blog = () => {
                     <div className="prose max-w-none border-b border-gray-200 mb-10">
                         {parse(post.content)}
                     </div>
-                    <Comments comments={post.comments} />
+                    <Comments comments={comments} setComments={setComments}/>
                 </div>
             </div>
         </div>
