@@ -27,7 +27,7 @@ const Comments = ({ comments, setComments }) => {
                         <div className="flex flex-col">
                             <div className="flex justify-between cursor-pointer">
                                 <div className="text-lg font-bold">{comment.user.name} | {comment.createdAt}</div>
-                                <Trash onClick={() => handleDelete(comment.id)}/>
+                                <Trash size={30} className="hover:bg-red-100 p-1 rounded" onClick={() => handleDelete(comment.id)}/>
                             </div>
                             <div>{comment.content}</div>
                         </div>

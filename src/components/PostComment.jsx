@@ -30,7 +30,7 @@ const PostComment = ({ comments, setComments }) => {
                 onChange={handleChange}
                 className="w-3/4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-5"
             />
-            <button className="bg-black p-1 text-white mb-5 rounded-md">Respond</button>
+            <button className="bg-black p-1 text-white mb-5 rounded-md cursor-pointer">Respond</button>
         </form>
     )
 }
